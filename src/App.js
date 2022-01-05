@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import ShortenLinkCard from "./components/ShortenLinkCard";
 import InfoCard from "./components/InfoCard";
+import Footer from "./components/Footer";
 
 const statisticCardData = [
   {
@@ -81,6 +82,7 @@ function App() {
           </LinksContainer>
         </BoostSection>
       </Main>
+      <Footer />
     </Wrapper>
   );
 }
