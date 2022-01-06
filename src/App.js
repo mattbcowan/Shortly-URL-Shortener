@@ -44,8 +44,8 @@ function App() {
           </ActionText>
           <GetStartedBtn>Get Started</GetStartedBtn>
         </Section>
-        <ShortenLinkCard />
         <SectionDark>
+          <ShortenLinkCard />
           <Spacing />
           <SectionHeader>Advanced Statistics</SectionHeader>
           <SectionText>
@@ -187,13 +187,13 @@ const GetStartedBtn = styled.button`
 
 const SectionDark = styled.section`
   padding: 1rem 2rem;
-  margin-top: -6rem;
+  margin-top: 8rem;
   background: #f2f2f2;
   text-align: center;
 `;
 
 const Spacing = styled.div`
-  margin-top: 8rem;
+  margin-top: 4rem;
 `;
 
 const SectionHeader = styled.h2`
