@@ -5,29 +5,40 @@ import env from "react-dotenv";
 const ShortenLinkCard = () => {
   const [url, setUrl] = useState("");
   const [shortenedData, setShortenedData] = useState([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const checkForProtocol = (string) => {
     let url;
-
-    if (string.startsWith("http://") || string.startsWith("https://")) {
-      url = new URL(string);
-    } else {
-      url = new URL(`http://${string}`);
+    try {
+      if (string.startsWith("http://") || string.startsWith("https://")) {
+        url = new URL(string);
+      } else {
+        url = new URL(`http://${string}`);
+      }
+      return url;
+    } catch (error) {
+      console.error(error);
+      setError(true);
     }
-
-    return url;
   };
 
   const verifyUrl = (string) => {
-    let url = checkForProtocol(string);
     const matchpattern =
       /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/gm;
-    return matchpattern.test(url);
+    try {
+      return matchpattern.test(string);
+    } catch (error) {
+      console.error(error);
+      setError(true);
+    }
   };
 
   const handleSubmit = () => {
-    if (verifyUrl(url)) {
-      let longUrl = checkForProtocol(url);
+    let checkedUrl = checkForProtocol(url);
+    if (verifyUrl(checkedUrl) === true) {
+      setError(false);
+      let longUrl = checkedUrl;
       const reqUrl = "https://api-ssl.bitly.com/v4/shorten";
       const options = {
         method: "post",
@@ -47,18 +58,30 @@ const ShortenLinkCard = () => {
           setUrl("");
         });
     } else {
-      console.log("Error"); // Handle later
+      setError(true);
     }
   };
 
   return (
     <>
       <Wrapper>
-        <LinkInput
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="Shorten a link here..."
-        />
+        {error === true ? (
+          <>
+            <LinkInput
+              error
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="Shorten a link here..."
+            />
+            <ErrorText>Please add a link</ErrorText>
+          </>
+        ) : (
+          <LinkInput
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Shorten a link here..."
+          />
+        )}
         <ShortenButton onClick={() => handleSubmit()}>
           Shorten It!
         </ShortenButton>
@@ -108,6 +131,7 @@ const OutputWrapper = styled.div`
   color: #34313d;
   padding: 0;
   text-align: left;
+  transition: background 175ms ease-in;
   & :nth-child(2) {
     border-bottom: none;
   }
@@ -117,14 +141,13 @@ const LinkInput = styled.input`
   display: flex;
   font-size: 16px;
   padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: none;
+  border: ${(props) => (props.error ? "3px solid #F46363" : "none")};
   outline: none;
   border-radius: 0.25em;
   width: 100%;
 
   ::placeholder {
-    color: #34313d;
+    color: ${(props) => (props.error ? "#F46363" : "#34313d")};
   }
 `;
 
@@ -160,6 +183,7 @@ const CopyUrlButton = styled.button`
 `;
 
 const ShortenButton = styled.button`
+  margin-top: 1rem;
   color: #ffffff;
   background: #2bd0d0;
   font-size: 20px;
@@ -174,4 +198,11 @@ const ShortenButton = styled.button`
   :hover {
     background: #9ae3e3;
   }
+`;
+
+const ErrorText = styled.em`
+  font-size: 12px;
+  color: #f46363;
+  letter-spacing: 0.08px;
+  align-self: flex-start;
 `;
