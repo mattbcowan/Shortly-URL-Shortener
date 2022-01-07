@@ -18,7 +18,7 @@ const Navigation = () => {
 export default Navigation;
 
 const Container = styled.nav`
-  padding: 1rem;
+  padding: 1rem 2rem;
 `;
 
 const Wrapper = styled.div`

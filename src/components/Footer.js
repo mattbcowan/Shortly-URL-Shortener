@@ -24,10 +24,10 @@ const Footer = () => {
         <ListItem>Contact</ListItem>
       </List>
       <SocialWrapper>
-        <SocialIcon src="/images/facebook.svg" />
-        <SocialIcon src="/images/twitter.svg" />
-        <SocialIcon src="/images/pinterest.svg" />
-        <SocialIcon src="/images/instagram.svg" />
+        <SocialIcon mask="/images/facebook.svg" />
+        <SocialIcon mask="/images/twitter.svg" />
+        <SocialIcon mask="/images/pinterest.svg" />
+        <SocialIcon mask="/images/instagram.svg" />
       </SocialWrapper>
     </Wrapper>
   );
@@ -61,6 +61,11 @@ const List = styled.ul`
 
 const ListItem = styled.li`
   padding-bottom: 1rem;
+  transition: color 175ms ease-in;
+  cursor: pointer;
+  :hover {
+    color: #2bd0d0;
+  }
 `;
 
 const SocialWrapper = styled.div`
@@ -70,4 +75,17 @@ const SocialWrapper = styled.div`
   padding-top: 2rem;
 `;
 
-const SocialIcon = styled.img``;
+const SocialIcon = styled.svg`
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+  mask: url(${(props) => props.mask});
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  background: #ffffff;
+  transition: background 175ms ease-in;
+  cursor: pointer;
+  :hover {
+    background: #2bd0d0;
+  }
+`;
