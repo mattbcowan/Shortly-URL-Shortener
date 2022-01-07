@@ -2,6 +2,7 @@ import styled from "styled-components";
 import ShortenLinkCard from "./components/ShortenLinkCard";
 import InfoCard from "./components/InfoCard";
 import Footer from "./components/Footer";
+import Button from "./components/Button";
 
 const statisticCardData = [
   {
@@ -42,7 +43,14 @@ function App() {
             Build your brand’s recognition and get detailed insights on how your
             links are performing.
           </ActionText>
-          <GetStartedBtn>Get Started</GetStartedBtn>
+          <Button
+            borderRadius="50px"
+            fontSize="20px"
+            padding="1rem 3rem"
+            width="auto"
+          >
+            Get Started
+          </Button>
         </Section>
         <SectionDark>
           <ShortenLinkCard />
@@ -78,7 +86,14 @@ function App() {
         <BoostSection>
           <LinksContainer>
             <SectionHeader light>Boost your links today</SectionHeader>
-            <GetStartedBtn>Get Started</GetStartedBtn>
+            <Button
+              borderRadius="50px"
+              fontSize="20px"
+              padding="1rem 3rem"
+              width="auto"
+            >
+              Get Started
+            </Button>
           </LinksContainer>
         </BoostSection>
       </Main>
@@ -167,22 +182,6 @@ const BoostSection = styled.section`
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-`;
-
-const GetStartedBtn = styled.button`
-  color: #ffffff;
-  background: #2bd0d0;
-  font-size: 20px;
-  font-weight: 700;
-  padding: 1rem 3rem;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: background 175ms ease-in;
-
-  :hover {
-    background: #9ae3e3;
-  }
 `;
 
 const SectionDark = styled.section`

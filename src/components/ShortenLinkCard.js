@@ -7,7 +7,6 @@ const ShortenLinkCard = () => {
   const [url, setUrl] = useState("");
   const [shortenedData, setShortenedData] = useState([]);
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const checkForProtocol = (string) => {
     let url;
@@ -98,7 +97,7 @@ const ShortenLinkCard = () => {
           </LinkOutput>
           <LinkOutput>
             <ShortUrl>{data.link}</ShortUrl>
-            <CopyUrlButton>Copy</CopyUrlButton>
+            <Button fontSize="16px">Copy</Button>
           </LinkOutput>
         </OutputWrapper>
       ))}
@@ -170,35 +169,6 @@ const ShortUrl = styled.div`
   padding-bottom: 0.5rem;
   text-size: 16px;
   letter-spacing: 0.12px;
-`;
-
-const CopyUrlButton = styled.button`
-  background: #2bd0d0;
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 0.75rem;
-  border: none;
-  width: 100%;
-  cursor: pointer;
-`;
-
-const ShortenButton = styled.button`
-  margin-top: 1rem;
-  color: #ffffff;
-  background: #2bd0d0;
-  font-size: 20px;
-  font-weight: 700;
-  padding: 1rem 3rem;
-  border: none;
-  width: 100%;
-  border-radius: 0.25em;
-  cursor: pointer;
-  transition: background 175ms ease-in;
-
-  :hover {
-    background: #9ae3e3;
-  }
 `;
 
 const ErrorText = styled.em`

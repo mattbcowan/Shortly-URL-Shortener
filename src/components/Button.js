@@ -36,4 +36,9 @@ const Wrapper = styled.button`
   border-radius: ${(props) => props.borderRadius || "0.25em"};
   width: ${(props) => props.width || "100%"};
   cursor: pointer;
+  transition: background 175ms ease-in;
+
+  :hover {
+    background: #9ae3e3;
+  }
 `;
