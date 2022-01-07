@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import env from "react-dotenv";
+import Button from "./Button";
 
 const ShortenLinkCard = () => {
   const [url, setUrl] = useState("");
@@ -82,9 +83,9 @@ const ShortenLinkCard = () => {
             placeholder="Shorten a link here..."
           />
         )}
-        <ShortenButton onClick={() => handleSubmit()}>
+        <Button fontSize="20px" onClick={() => handleSubmit()}>
           Shorten It!
-        </ShortenButton>
+        </Button>
       </Wrapper>
       {shortenedData.map((data, index) => (
         <OutputWrapper key={index}>
