@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Button from "./Button";
 
 const Navigation = () => {
   return (
@@ -10,6 +11,17 @@ const Navigation = () => {
           <Bar />
           <Bar />
         </Hamburger>
+        <ul>
+          <li>Features</li>
+          <li>Pricing</li>
+          <li>Resources</li>
+        </ul>
+        <ul>
+          <li>Login</li>
+          <li>
+            <Button borderRadius={"10rem"}>Sign Up</Button>
+          </li>
+        </ul>
       </Wrapper>
     </Container>
   );
