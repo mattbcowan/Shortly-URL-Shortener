@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import env from "react-dotenv";
 import Button from "./Button";
@@ -7,6 +7,19 @@ const ShortenLinkCard = () => {
   const [url, setUrl] = useState("");
   const [shortenedData, setShortenedData] = useState([]);
   const [error, setError] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const changeWidth = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", changeWidth);
+
+    return () => {
+      window.removeEventListener("resize", changeWidth);
+    };
+  }, []);
 
   const checkForProtocol = (string) => {
     let url;
@@ -63,10 +76,10 @@ const ShortenLinkCard = () => {
   };
 
   return (
-    <>
+    <Container>
       <Wrapper>
         {error === true ? (
-          <>
+          <ErrorContainer>
             <LinkInput
               error
               value={url}
@@ -74,7 +87,7 @@ const ShortenLinkCard = () => {
               placeholder="Shorten a link here..."
             />
             <ErrorText>Please add a link</ErrorText>
-          </>
+          </ErrorContainer>
         ) : (
           <LinkInput
             value={url}
@@ -82,7 +95,11 @@ const ShortenLinkCard = () => {
             placeholder="Shorten a link here..."
           />
         )}
-        <Button fontSize="20px" onClick={() => handleSubmit()}>
+        <Button
+          fontSize="20px"
+          marginTop={screenWidth > 800 ? "0" : ""}
+          onClick={() => handleSubmit()}
+        >
           Shorten It!
         </Button>
       </Wrapper>
@@ -97,15 +114,26 @@ const ShortenLinkCard = () => {
           </LinkOutput>
           <LinkOutput>
             <ShortUrl>{data.link}</ShortUrl>
-            <Button fontSize="16px">Copy</Button>
+            <Button
+              fontSize="16px"
+              marginTop={screenWidth > 800 ? "0" : ""}
+              width={screenWidth > 800 ? "10em" : "100%"}
+            >
+              Copy
+            </Button>
           </LinkOutput>
         </OutputWrapper>
       ))}
-    </>
+    </Container>
   );
 };
 
 export default ShortenLinkCard;
+
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -122,18 +150,13 @@ const Wrapper = styled.div`
   background-image: url("/images/shorten-card-blob.svg");
   background-repeat: no-repeat;
   background-position: top right;
-`;
 
-const OutputWrapper = styled.div`
-  margin: 1rem 0;
-  border-radius: 1rem;
-  background: #ffffff;
-  color: #34313d;
-  padding: 0;
-  text-align: left;
-  transition: background 175ms ease-in;
-  & :nth-child(2) {
-    border-bottom: none;
+  @media (min-width: 800px) {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    gap: 1em;
+    align-items: start;
+    padding: 2em;
   }
 `;
 
@@ -151,12 +174,40 @@ const LinkInput = styled.input`
   }
 `;
 
+const OutputWrapper = styled.div`
+  margin: 1rem 0;
+  border-radius: 1rem;
+  background: #ffffff;
+  color: #34313d;
+  padding: 0;
+  text-align: left;
+  transition: background 175ms ease-in;
+  & :nth-child(2) {
+    border-bottom: none;
+  }
+
+  @media (min-width: 800px) {
+    display: flex;
+    align-items: center;
+
+    & :nth-child(2) {
+      justify-content: flex-end;
+    }
+  }
+`;
+
 const LinkOutput = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   padding: 1rem 2rem;
   border-bottom: 1px solid #9e9aa8;
+
+  @media (min-width: 800px) {
+    flex-direction: row;
+    border-bottom: none;
+    flex: 1;
+  }
 `;
 
 const LongUrl = styled.div`
@@ -169,6 +220,12 @@ const ShortUrl = styled.div`
   padding-bottom: 0.5rem;
   text-size: 16px;
   letter-spacing: 0.12px;
+
+  @media (min-width: 800px) {
+    margin-right: 1em;
+    align-self: center;
+    padding-bottom: 0;
+  }
 `;
 
 const ErrorText = styled.em`
@@ -176,4 +233,9 @@ const ErrorText = styled.em`
   color: #f46363;
   letter-spacing: 0.08px;
   align-self: flex-start;
+`;
+
+const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;

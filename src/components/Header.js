@@ -4,7 +4,11 @@ import Button from "./Button";
 const Header = () => {
   return (
     <Container>
-      <HeaderImage src="/images/person-at-desk-mobile.svg" />
+      <HeaderImage
+        src="/images/person-at-desk-mobile.svg"
+        aria-hidden="true"
+        role="presentation"
+      />
       <Wrapper>
         <CallToAction>More than just shorter links</CallToAction>
         <ActionText>
