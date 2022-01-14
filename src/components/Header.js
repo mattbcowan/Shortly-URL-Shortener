@@ -26,7 +26,14 @@ const Header = () => {
 
 export default Header;
 
-const Container = styled.section``;
+const Container = styled.section`
+  @media (min-width: 800px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+`;
 
 const Wrapper = styled.div`
   padding: 1rem 2rem;
@@ -34,11 +41,23 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   background: #ffffff;
+
+  @media (min-width: 800px) {
+    grid-column: 1/2;
+    grid-row: 1/2;
+    align-self: center;
+    align-items: flex-start;
+  }
 `;
 
 const HeaderImage = styled.img`
   padding-left: 1rem;
-  width: 100vw;
+  width: 100%;
+
+  @media (min-width: 800px) {
+    grid-column: 2/3;
+    grid-row: 1/2;
+  }
 `;
 
 const CallToAction = styled.div`
@@ -49,6 +68,13 @@ const CallToAction = styled.div`
   line-height: 48px;
   padding: 2rem 0;
   color: #34313d;
+
+  @media (min-width: 800px) {
+    text-align: left;
+    font-size: 4em;
+    line-height: 1.2em;
+    padding-bottom: 0.5rem;
+  }
 `;
 
 const ActionText = styled.div`
@@ -58,4 +84,9 @@ const ActionText = styled.div`
   line-height: 30px;
   color: #9e9aa8;
   padding-bottom: 2rem;
+
+  @media (min-width: 800px) {
+    text-align: left;
+    padding-bottom: 0.5rem;
+  }
 `;
