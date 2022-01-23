@@ -7,6 +7,7 @@ const ShortenLinkCard = () => {
   const [url, setUrl] = useState("");
   const [shortenedData, setShortenedData] = useState([]);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -47,32 +48,38 @@ const ShortenLinkCard = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const reqUrl = "https://api-ssl.bitly.com/v4/shorten";
     let checkedUrl = checkForProtocol(url);
-    if (verifyUrl(checkedUrl) === true) {
-      setError(false);
-      let longUrl = checkedUrl;
-      const reqUrl = "https://api-ssl.bitly.com/v4/shorten";
-      const options = {
-        method: "post",
-        headers: new Headers({
-          Authorization: `Bearer ${env.BITLY_TOKEN}`,
-          "Content-Type": "application/json",
-        }),
-        body: JSON.stringify({
-          long_url: longUrl.toString(),
-          domain: "bit.ly",
-        }),
-      };
-      fetch(reqUrl, options)
-        .then((res) => res.json())
-        .then((data) => {
-          setShortenedData((previousData) => [...previousData, data]);
-          setUrl("");
-        });
-    } else {
+    let verified = verifyUrl(checkedUrl);
+
+    const options = {
+      method: "post",
+      headers: new Headers({
+        Authorization: `Bearer ${env.BITLY_TOKEN}`,
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify({
+        long_url: checkedUrl.toString(),
+        domain: "bit.ly",
+      }),
+    };
+
+    const response = await fetch(reqUrl, options);
+
+    if (!response.ok) {
       setError(true);
+      setErrorMessage(`An error has occured: ${response.status}`);
     }
+
+    if (!verified) {
+      setError(true);
+      setErrorMessage("Not a valid URL");
+    }
+
+    const shortenedUrl = await response.json();
+    setShortenedData((previousData) => [...previousData, shortenedUrl]);
+    setUrl("");
   };
 
   return (
