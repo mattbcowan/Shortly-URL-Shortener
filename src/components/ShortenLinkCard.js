@@ -39,7 +39,7 @@ const ShortenLinkCard = () => {
 
   const verifyUrl = (string) => {
     const matchpattern =
-      /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/gm;
+      /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/gm;
     try {
       return matchpattern.test(string);
     } catch (error) {
@@ -93,7 +93,7 @@ const ShortenLinkCard = () => {
               onChange={(e) => setUrl(e.target.value)}
               placeholder="Shorten a link here..."
             />
-            <ErrorText>Please add a link</ErrorText>
+            <ErrorText>{errorMessage}</ErrorText>
           </ErrorContainer>
         ) : (
           <LinkInput
