@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import env from "react-dotenv";
 import Button from "./Button";
+import { shortenUrl } from "../api/URLProcessing";
 
 const ShortenLinkCard = () => {
   const [url, setUrl] = useState("");
@@ -22,64 +22,15 @@ const ShortenLinkCard = () => {
     };
   }, []);
 
-  const checkForProtocol = (string) => {
-    let url;
+  const handleSubmit = () => {
     try {
-      if (string.startsWith("http://") || string.startsWith("https://")) {
-        url = new URL(string);
-      } else {
-        url = new URL(`http://${string}`);
-      }
-      return url;
-    } catch (error) {
-      console.error(error);
-      setError(true);
+      shortenUrl(url).then((res) => {
+        setShortenedData((previousData) => [...previousData, res]);
+        setUrl("");
+      });
+    } catch (err) {
+      console.error(err);
     }
-  };
-
-  const verifyUrl = (string) => {
-    const matchpattern =
-      /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/gm;
-    try {
-      return matchpattern.test(string);
-    } catch (error) {
-      console.error(error);
-      setError(true);
-    }
-  };
-
-  const handleSubmit = async () => {
-    const reqUrl = "https://api-ssl.bitly.com/v4/shorten";
-    let checkedUrl = checkForProtocol(url);
-    let verified = verifyUrl(checkedUrl);
-
-    const options = {
-      method: "post",
-      headers: new Headers({
-        Authorization: `Bearer ${env.BITLY_TOKEN}`,
-        "Content-Type": "application/json",
-      }),
-      body: JSON.stringify({
-        long_url: checkedUrl.toString(),
-        domain: "bit.ly",
-      }),
-    };
-
-    const response = await fetch(reqUrl, options);
-
-    if (!response.ok) {
-      setError(true);
-      setErrorMessage(`An error has occured: ${response.status}`);
-    }
-
-    if (!verified) {
-      setError(true);
-      setErrorMessage("Not a valid URL");
-    }
-
-    const shortenedUrl = await response.json();
-    setShortenedData((previousData) => [...previousData, shortenedUrl]);
-    setUrl("");
   };
 
   return (
