@@ -23,14 +23,15 @@ const ShortenLinkCard = () => {
   }, []);
 
   const handleSubmit = () => {
-    try {
-      shortenUrl(url).then((res) => {
+    shortenUrl(url)
+      .then((res) => {
         setShortenedData((previousData) => [...previousData, res]);
         setUrl("");
+      })
+      .catch((err) => {
+        setError(true);
+        setErrorMessage(err);
       });
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   return (
@@ -61,27 +62,28 @@ const ShortenLinkCard = () => {
           Shorten It!
         </Button>
       </Wrapper>
-      {shortenedData.map((data, index) => (
-        <OutputWrapper key={index}>
-          <LinkOutput>
-            <LongUrl>
-              {data.long_url.length > 30
-                ? data.long_url.slice(0, 26).concat("...")
-                : data.long_url}
-            </LongUrl>
-          </LinkOutput>
-          <LinkOutput>
-            <ShortUrl>{data.link}</ShortUrl>
-            <Button
-              fontSize="16px"
-              marginTop={screenWidth > 800 ? "0" : ""}
-              width={screenWidth > 800 ? "10em" : "100%"}
-            >
-              Copy
-            </Button>
-          </LinkOutput>
-        </OutputWrapper>
-      ))}
+      {shortenedData &&
+        shortenedData.map((data, index) => (
+          <OutputWrapper key={index}>
+            <LinkOutput>
+              <LongUrl>
+                {data.long_url.length > 30
+                  ? data.long_url.slice(0, 26).concat("...")
+                  : data.long_url}
+              </LongUrl>
+            </LinkOutput>
+            <LinkOutput>
+              <ShortUrl>{data.link}</ShortUrl>
+              <Button
+                fontSize="16px"
+                marginTop={screenWidth > 800 ? "0" : ""}
+                width={screenWidth > 800 ? "10em" : "100%"}
+              >
+                Copy
+              </Button>
+            </LinkOutput>
+          </OutputWrapper>
+        ))}
     </Container>
   );
 };

@@ -18,6 +18,11 @@ export const shortenUrl = async (string) => {
   const reqUrl = "https://api-ssl.bitly.com/v4/shorten";
   const checkedUrl = checkForProtocol(string);
   const verified = verifyUrl(checkedUrl);
+
+  if (!verified) {
+    console.error("URL not valid");
+  }
+
   const options = {
     method: "post",
     headers: new Headers({
@@ -32,14 +37,10 @@ export const shortenUrl = async (string) => {
 
   const response = await fetch(reqUrl, options);
 
-  if (!response.ok) {
+  if (response.ok) {
+    const shortenedUrl = await response.json();
+    return shortenedUrl;
+  } else {
     console.error(response.status);
   }
-
-  if (!verified) {
-    console.error("URL not valid");
-  }
-
-  const shortenedUrl = await response.json();
-  return shortenedUrl;
 };
